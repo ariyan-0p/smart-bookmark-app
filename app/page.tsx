@@ -38,6 +38,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
+  const [showSignout, setShowSignout] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
 
   useEffect(() => {
@@ -146,7 +147,7 @@ export default function Home() {
             <span className="hidden sm:block text-[11px] font-semibold text-slate-500 bg-white/[0.04] border border-white/[0.06] px-3 py-1.5 rounded-full">
               {bookmarks.length} saved
             </span>
-            <button onClick={handleSignOut} className="p-2 text-slate-500 hover:text-red-400 transition-colors rounded-lg hover:bg-red-500/10">
+            <button onClick={() => setShowSignout(true)} className="p-2 text-slate-500 hover:text-red-400 transition-colors rounded-lg hover:bg-red-500/10">
               <LogOut size={18} />
             </button>
           </div>
@@ -227,6 +228,34 @@ export default function Home() {
           </div>
         )}
       </div>
+      {/* SIGNOUT MODAL */}
+      {showSignout && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowSignout(false)} />
+          <div className="relative bg-[#0e0e17] border border-white/10 rounded-2xl p-6 w-full max-w-sm shadow-2xl shadow-black/50">
+            <div className="w-12 h-12 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <LogOut size={22} className="text-red-400" />
+            </div>
+            <h3 className="text-white font-bold text-lg text-center tracking-[-0.3px] mb-1">Sign out?</h3>
+            <p className="text-slate-500 text-sm text-center mb-6">You'll need to sign in again to access your bookmarks.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowSignout(false)}
+                className="flex-1 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.07] text-slate-400 hover:text-white font-semibold text-sm transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSignOut}
+                className="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold text-sm transition-all shadow-lg shadow-red-500/25"
+              >
+                Sign out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* DELETE MODAL */}
       {deleteTarget && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
